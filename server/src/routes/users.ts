@@ -1,7 +1,7 @@
 import express from "express";
 import { check, validationResult } from "express-validator";
-import verifyTokenMw from "src/middlewares/verifyToken";
-import User from "src/models/User";
+import verifyTokenMw from "../middlewares/verifyToken";
+import User from "../models/User";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 

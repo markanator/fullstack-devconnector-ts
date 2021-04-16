@@ -1,9 +1,9 @@
 import axios from "axios";
 import express, { Request, Response } from "express";
 import { check, validationResult } from "express-validator";
-import verifyTokenMw from "src/middlewares/verifyToken";
-import Profile, { IExperience } from "src/models/Profile";
-import User from "src/models/User";
+import verifyTokenMw from "../middlewares/verifyToken";
+import Profile, { IExperience } from "../models/Profile";
+import User from "../models/User";
 
 const router = express.Router();
 
