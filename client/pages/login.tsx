@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../components/Layout";
+import Alert from "../components/Alert";
 
 interface Props {}
 
@@ -33,7 +34,7 @@ export default function login({}: Props): ReactElement {
   return (
     <Layout>
       <section className="container">
-        {/* <div className="alert alert-danger">Invalid credentials</div> */}
+        <Alert />
         <h1 className="large text-primary">Sign In</h1>
         <p className="lead">
           <i className="fas fa-user"></i> Sign into Your Account

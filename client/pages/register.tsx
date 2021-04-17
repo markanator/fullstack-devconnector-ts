@@ -2,7 +2,10 @@ import React, { ReactElement } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { setAlert } from "../state/AlertSlice";
 import Layout from "../components/Layout";
+import Alert from "../components/Alert";
 
 interface Props {}
 
@@ -14,6 +17,7 @@ type FormData = {
 };
 
 export default function register({}: Props): ReactElement {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -22,7 +26,8 @@ export default function register({}: Props): ReactElement {
 
   const onSubmit = async (data) => {
     if (data.password !== data.password2) {
-      console.log("PASSWORDS DO NOT MATCH");
+      // console.log("PASSWORDS DO NOT MATCH");
+      dispatch(setAlert("Passwords do not match.", "danger"));
     } else {
       const newUser = {
         name: data.name,
@@ -41,6 +46,7 @@ export default function register({}: Props): ReactElement {
   return (
     <Layout>
       <section className="container">
+        <Alert />
         <h1 className="large text-primary">Sign Up</h1>
         <p className="lead">
           <i className="fas fa-user"></i> Create Your Account
@@ -51,6 +57,7 @@ export default function register({}: Props): ReactElement {
               type="text"
               placeholder="Mark Ambro"
               required
+              autoComplete="first-name"
               {...register("name", { required: true, min: 2 })}
             />
             <p>{errors.name && "Name is required"}</p>
@@ -60,6 +67,7 @@ export default function register({}: Props): ReactElement {
               type="email"
               placeholder="mark@gmail.com"
               required
+              autoComplete="new-password"
               {...register("email", { required: true })}
             />
             <small className="form-text">

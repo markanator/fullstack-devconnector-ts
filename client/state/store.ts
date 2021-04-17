@@ -5,10 +5,9 @@ import {
 } from "@reduxjs/toolkit";
 import Logger from "redux-logger";
 import alertReducer from "./AlertSlice";
-import userReducer from "./AlertSlice";
+import userReducer from "./UserSlice";
 
 const rootReducer = combineReducers({
-  // TODO
   alert: alertReducer,
   user: userReducer,
 });

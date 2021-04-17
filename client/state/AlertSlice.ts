@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuid } from "uuid";
 import { RootState } from "./store";
 
 type Alert = {
@@ -6,13 +7,6 @@ type Alert = {
   msg: string;
   alertType: string;
 };
-
-enum LoadingState {
-  IDLE = "idle",
-  LOADING = "loading",
-  LOADED = "loaded",
-  ERROR = "error",
-}
 
 type AlertState = {
   alerts: Alert[];
@@ -26,8 +20,17 @@ export const alertSlice = createSlice({
   name: "alert",
   initialState,
   reducers: {
-    setAlert: (state, action: PayloadAction<Alert>) => {
-      state.alerts.push(action.payload);
+    setAlert: {
+      prepare: (msg: string, alertType: string) => ({
+        payload: {
+          id: uuid(),
+          msg,
+          alertType,
+        },
+      }),
+      reducer: (state, action: PayloadAction<Alert>) => {
+        state.alerts.push(action.payload);
+      },
     },
     removeAlert: (state, { payload }) => {
       state.alerts.filter((alert) => alert.id !== payload);
@@ -37,6 +40,9 @@ export const alertSlice = createSlice({
 
 // export actions for hooks
 export const { setAlert, removeAlert } = alertSlice.actions;
+
+//  * Extract alerts from root state
+export const selectAlert = (state: RootState) => state.alert.alerts;
 
 // export reducer for store
 export default alertSlice.reducer;
