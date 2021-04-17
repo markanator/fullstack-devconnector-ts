@@ -8,7 +8,7 @@ export default function Navbar({}: Props): ReactElement {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <Link href="/index">
+        <Link href="/">
           <a>
             <FaCode /> DevConnector
           </a>
