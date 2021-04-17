@@ -1,9 +1,11 @@
 export type TUser = {
+  id?: string;
   name: string;
   email: string;
-  password: string;
   avatar?: string;
+  password?: string;
   created_at?: Date;
+  __v?: number;
 };
 
 export type TRegUser = {
