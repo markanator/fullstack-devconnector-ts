@@ -4,11 +4,10 @@ import express, { Express } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import connectDB from "./config/db";
-
 import AuthRoutes from "./routes/auth";
-import UserRoutes from "./routes/users";
-import ProfileRoutes from "./routes/profile";
 import PostsRoutes from "./routes/posts";
+import ProfileRoutes from "./routes/profile";
+import UserRoutes from "./routes/users";
 
 dotenv.config();
 

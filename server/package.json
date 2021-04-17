@@ -1,5 +1,5 @@
 {
-  "name": "ts-mern-front2back",
+  "name": "fullstack-mern-fe2be-ts",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -7,9 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "watch": "tsc -w",
-    "dev": "nodemon dist/index.js",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "orm:migrate": "typeorm migration:run"
+    "dev": "nodemon dist/index.js"
   },
   "keywords": [],
   "author": "Mark Ambro <mark.ambmro@me.com>",
@@ -20,15 +18,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
     "express-validator": "^6.10.0",
     "gravatar": "^1.8.1",
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.4",
-    "morgan": "^1.10.0",
-    "slugify": "^1.5.0",
-    "uuid": "^8.3.2"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
