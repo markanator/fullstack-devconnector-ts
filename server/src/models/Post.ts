@@ -5,6 +5,7 @@ export interface ILikes {
 }
 
 export interface IComments {
+  id?: string;
   user: string;
   text: string;
   name?: string;

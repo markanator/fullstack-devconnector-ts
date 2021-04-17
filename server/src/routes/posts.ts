@@ -177,4 +177,85 @@ router.put(
   }
 );
 
+// @route   POST api/posts/comment/:id
+// @desc    create comment
+// @access  Auth
+router.post(
+  "/comment/:id",
+  verifyTokenMw,
+  [check("text", "Text is required.").not().isEmpty()],
+  async (req: Partial<Request>, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+
+    try {
+      const user = await User.findById(req.user!.id).select("-password");
+      if (!user) return res.status(400).json({ msg: "Nothing Found." });
+
+      const post = await Post.findById(req.params!.id);
+      if (!post) return res.status(404).json({ msg: "Nothing not found." });
+
+      const newComment = {
+        text: req.body.text,
+        name: user.name,
+        avatar: user.avatar,
+        user: req.user!.id,
+      };
+
+      post.comments.unshift(newComment);
+
+      await post.save();
+
+      return res.status(201).json(post.comments);
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({ msg: "Server error." });
+    }
+  }
+);
+
+// @route   Delete api/posts/comment/:id/:commentId
+// @desc    delete comment
+// @access  Public
+router.delete(
+  "/comment/:postId/:commentId",
+  verifyTokenMw,
+  async (req: Request, res: Response) => {
+    try {
+      const post = await Post.findById(req.params!.postId);
+      if (!post) return res.status(404).json({ msg: "No post Found" });
+
+      // pull out comment
+      const comment = post.comments.find(
+        (comment) => comment.id === req.params!.commentId
+      );
+      if (!comment) return res.status(404).json({ msg: "No Comment Found" });
+
+      if (comment.user.toString() !== req.user!.id)
+        return res.status(403).json({ msg: "Not authorized." });
+
+      // get remove index
+      const removeIndex = post.comments
+        .map((comment) => comment.user.toString())
+        .indexOf(req.user!.id);
+
+      if (removeIndex < 0)
+        return res.status(400).json({ msg: "No comment found." });
+
+      post.comments.splice(removeIndex, 1);
+
+      await post.save();
+
+      return res.status(200).json(post.comments);
+    } catch (error) {
+      console.log(error.message);
+      if (error.kind === "ObjectId")
+        return res.status(404).json({ msg: "Nothing Found" });
+
+      return res.status(500).json({ msg: "Server error." });
+    }
+  }
+);
+
 export default router;
