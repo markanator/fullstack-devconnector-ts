@@ -10,7 +10,7 @@ export default function Navbar(): ReactElement {
   const authLinks = (
     <ul>
       <li>
-        <a href="/" onClick={() => dispatch(LogoutAuthAction())}>
+        <a href="#!" onClick={() => dispatch(LogoutAuthAction())}>
           <FaSignOutAlt />
           <span className="hide-sm">Logout</span>
         </a>

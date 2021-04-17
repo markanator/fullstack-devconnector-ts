@@ -11,7 +11,7 @@ const withAuth = (WrappedComponent) => {
       const clientToken = window.localStorage.getItem("token");
 
       if (!clientToken || !isAuthenticated) {
-        router.replace("/login");
+        router.push("/login");
         return null;
       }
 
