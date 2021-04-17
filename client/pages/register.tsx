@@ -55,7 +55,7 @@ export default function register({}: Props): ReactElement {
           <div className="form-group">
             <input
               type="text"
-              placeholder="Mark Ambro"
+              placeholder="name"
               required
               autoComplete="first-name"
               {...register("name", { required: true, min: 2 })}
@@ -65,7 +65,7 @@ export default function register({}: Props): ReactElement {
           <div className="form-group">
             <input
               type="email"
-              placeholder="mark@gmail.com"
+              placeholder="e-mail"
               required
               autoComplete="new-password"
               {...register("email", { required: true })}
@@ -79,7 +79,7 @@ export default function register({}: Props): ReactElement {
           <div className="form-group">
             <input
               type="password"
-              placeholder="Password"
+              placeholder="******"
               minLength={6}
               required
               autoComplete="new-password"
@@ -94,7 +94,7 @@ export default function register({}: Props): ReactElement {
           <div className="form-group">
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder="******"
               minLength={6}
               required
               autoComplete="new-password"

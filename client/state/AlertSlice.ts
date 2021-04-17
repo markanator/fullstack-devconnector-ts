@@ -3,18 +3,12 @@ import { v4 as uuid } from "uuid";
 import { RootState } from "./store";
 
 type Alert = {
-  id: number;
+  id: string;
   msg: string;
   alertType: string;
 };
 
-type AlertState = {
-  alerts: Alert[];
-};
-
-const initialState: AlertState = {
-  alerts: [],
-};
+const initialState: Alert[] = [];
 
 //! Main sauce
 export const alertSlice = createSlice({
@@ -30,11 +24,15 @@ export const alertSlice = createSlice({
         },
       }),
       reducer: (state, { payload }: PayloadAction<Alert>) => {
-        state.alerts.push(payload);
+        state.push(payload);
       },
     },
-    removeAlert: (state, { payload }: PayloadAction<Number>) => {
-      state.alerts.filter((alert) => alert.id !== payload);
+    removeAlert: (state, { payload }: PayloadAction<any>) => {
+      // immer compliant
+      state.splice(
+        state.findIndex((a) => a.id === payload),
+        1
+      );
     },
   },
 });
@@ -43,7 +41,7 @@ export const alertSlice = createSlice({
 export const { setAlert, removeAlert } = alertSlice.actions;
 
 //* for use with useSelector
-export const selectAlert = (state: RootState) => state.alert.alerts;
+export const selectAlert = (state: RootState) => state.alert;
 
 //? export reducer for store
 export default alertSlice.reducer;
