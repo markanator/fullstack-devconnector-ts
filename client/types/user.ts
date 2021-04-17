@@ -13,3 +13,8 @@ export type TRegUser = {
   email: string;
   password: string;
 };
+
+export type TLoginInfo = {
+  email: string;
+  password: string;
+};

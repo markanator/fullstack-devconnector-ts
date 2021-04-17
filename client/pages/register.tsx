@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react";
-import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { setAlert } from "../state/AlertSlice";
-import { RegUserAction } from "../state/AuthSlice";
-import Layout from "../components/Layout";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "../components/Alert";
+import Layout from "../components/Layout";
+import { setAlert } from "../state/AlertSlice";
+import { RegUserAction, selectAuth } from "../state/AuthSlice";
 
 interface Props {}
 
@@ -18,7 +18,10 @@ type FormData = {
 };
 
 export default function register({}: Props): ReactElement {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(selectAuth);
+
   const {
     register,
     handleSubmit,
@@ -37,6 +40,11 @@ export default function register({}: Props): ReactElement {
       dispatch(RegUserAction(newUser));
     }
   };
+
+  // redirect if authed
+  if (isAuthenticated) {
+    router.push("/");
+  }
 
   return (
     <Layout>

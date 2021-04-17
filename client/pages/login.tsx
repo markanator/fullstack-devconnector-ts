@@ -1,9 +1,11 @@
-import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
-import Layout from "../components/Layout";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "../components/Alert";
+import Layout from "../components/Layout";
+import { LoginUserAction, selectAuth } from "../state/AuthSlice";
 
 interface Props {}
 
@@ -13,6 +15,9 @@ type FormData = {
 };
 
 export default function login({}: Props): ReactElement {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector(selectAuth);
   const {
     register,
     handleSubmit,
@@ -20,16 +25,13 @@ export default function login({}: Props): ReactElement {
   } = useForm<FormData>();
 
   const onSubmit = async (data) => {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URI}/auth/login`,
-      {
-        email: data.email,
-        password: data.password,
-      }
-    );
-    console.log("RES", res.data);
-    // alert(JSON.stringify(data, null, 4));
+    dispatch(LoginUserAction({ email: data.email, password: data.password }));
   };
+
+  // redirect if authed
+  if (isAuthenticated) {
+    router.push("/");
+  }
 
   return (
     <Layout>
@@ -44,6 +46,7 @@ export default function login({}: Props): ReactElement {
             <input
               type="email"
               placeholder="mark@example.com"
+              autoComplete="email"
               required
               {...register("email", { required: true })}
             />

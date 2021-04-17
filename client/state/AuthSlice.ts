@@ -1,9 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TRegUser, TUser } from "../types/user";
-import setAuthToken from "../utils/AxiosWithAuth";
+import { TLoginInfo, TRegUser, TUser } from "../types/user";
+import setAuthToken from "../utils/setAuthToken";
 import { setAlert } from "./AlertSlice";
 import { RootState } from "./store";
+
+export const isClientSide = typeof window !== "undefined";
+export const tokenExsists =
+  isClientSide && window.localStorage.getItem("token") ? true : false;
+let clientToken = isClientSide && window.localStorage.getItem("token");
 
 type AuthState = {
   token: string;
@@ -13,12 +18,13 @@ type AuthState = {
 };
 // typeof window !== "undefined" && window.localStorage.getItem("token")
 const initialState: AuthState = {
-  token: "",
+  token: isClientSide && tokenExsists ? clientToken : "",
   isAuthenticated: false,
   loading: true,
   user: null,
 };
 
+//! MAIN
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -27,12 +33,6 @@ export const authSlice = createSlice({
       state.token = payload;
       state.isAuthenticated = true;
       state.loading = false;
-    },
-    regFail: (state) => {
-      state.token = "";
-      state.isAuthenticated = false;
-      state.loading = false;
-      state.user = null;
     },
     userLoaded: (state, { payload }: PayloadAction<TUser>) => {
       state.isAuthenticated = true;
@@ -49,6 +49,23 @@ export const authSlice = createSlice({
 });
 
 // custom THUNK actions :: easier than toolkit
+export const LoadUserAction = () => async (dispatch) => {
+  if (typeof window !== "undefined" && window.localStorage.getItem("token")) {
+    setAuthToken(window.localStorage.getItem("token"));
+  }
+  try {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/auth`);
+    // call userLoaded
+    dispatch(userLoaded(res.data));
+  } catch (err) {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("token");
+    }
+    // call authError
+    dispatch(authFail());
+  }
+};
+
 export const RegUserAction = (user: TRegUser) => async (dispatch) => {
   try {
     const res = await axios.post(
@@ -60,34 +77,42 @@ export const RegUserAction = (user: TRegUser) => async (dispatch) => {
       window.localStorage.setItem("token", res.data.token);
     }
 
-    return dispatch(regAffirm(res.data.token));
+    dispatch(regAffirm(res.data.token));
+    dispatch(LoadUserAction());
+    return;
   } catch (err) {
     // console.log("FAIL REG ASYNC RES:", { ...err.response.data });
     const errors: { msg: string }[] = err.response.data.errors;
     errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
-    return dispatch(regFail);
+    return dispatch(authFail());
   }
 };
 
-export const LoadUserAction = () => async (dispatch) => {
-  if (typeof window !== "undefined" && window.localStorage.getItem("token")) {
-    setAuthToken(window.localStorage.getItem("token"));
-  }
+export const LoginUserAction = (loginInfo: TLoginInfo) => async (dispatch) => {
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URI}/auth`);
-    // call userLoaded
-    dispatch(userLoaded(res.data as TUser));
-  } catch (err) {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URI}/auth/login`,
+      loginInfo
+    );
+    // console.log("AFFIRM REG ASYNC RES:", res.data);
     if (typeof window !== "undefined") {
-      window.localStorage.removeItem("token");
+      window.localStorage.setItem("token", res.data.token);
     }
-    // call authError
-    dispatch(authFail());
+
+    dispatch(regAffirm(res.data.token));
+    dispatch(LoadUserAction());
+    return;
+  } catch (err) {
+    // console.log("FAIL REG ASYNC RES:", { ...err.response.data });
+    // const errors: { msg: string }[] = err.response.data.errors;
+    // errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
+    dispatch(setAlert(err.response.data.msg, "danger"));
+    return dispatch(authFail());
   }
 };
 
 //! for user with useDispatch
-export const { regAffirm, regFail, authFail, userLoaded } = authSlice.actions;
+export const { regAffirm, authFail, userLoaded } = authSlice.actions;
 
 //* for use with useSelector
 export const selectAuth = (state: RootState) => state.auth;

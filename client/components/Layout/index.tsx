@@ -1,7 +1,7 @@
 import React, { ReactElement, ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { LoadUserAction } from "../../state/AuthSlice";
-import setAuthToken from "../../utils/AxiosWithAuth";
+import setAuthToken from "../../utils/setAuthToken";
 import Navbar from "./Navbar";
 
 interface Props {
