@@ -1,9 +1,9 @@
 import axios from "axios";
-import express, { Request, Response } from "express";
-import { check, validationResult } from "express-validator";
-import verifyTokenMw from "../middlewares/verifyToken";
+import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 import Profile, { IExperience } from "../models/Profile";
 import User from "../models/User";
+import { IProfileFields } from "../types/IProfileFields";
 
 const FetchMe = async (req: Request, res: Response) => {
   try {
@@ -43,24 +43,6 @@ const RegUpdateUser = async (req: Request, res: Response) => {
   } = req.body;
 
   // build profile object
-  interface IProfileFields {
-    user?: string;
-    company?: string;
-    website?: string;
-    location?: string;
-    bio?: string;
-    status?: string;
-    githubUsername?: string;
-    skills?: string[];
-    social?: {
-      youtube?: string;
-      facebook?: string;
-      twitter?: string;
-      instagram?: string;
-      linkedin?: string;
-      twitch?: string;
-    };
-  }
 
   const profileFields: IProfileFields = {};
   profileFields.user = req.user!.id;
