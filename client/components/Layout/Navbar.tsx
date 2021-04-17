@@ -1,4 +1,6 @@
 import React, { ReactElement } from "react";
+import Link from "next/link";
+import { FaCode } from "react-icons/fa";
 
 interface Props {}
 
@@ -6,19 +8,21 @@ export default function Navbar({}: Props): ReactElement {
   return (
     <nav className="navbar bg-dark">
       <h1>
-        <a href="index.html">
-          <i className="fas fa-code"></i> DevConnector
-        </a>
+        <Link href="/index">
+          <a>
+            <FaCode /> DevConnector
+          </a>
+        </Link>
       </h1>
       <ul>
         <li>
-          <a href="profiles.html">Developers</a>
+          <Link href="/profiles">Developers</Link>
         </li>
         <li>
-          <a href="register.html">Register</a>
+          <Link href="/register">Register</Link>
         </li>
         <li>
-          <a href="login.html">Login</a>
+          <Link href="/login">Login</Link>
         </li>
       </ul>
     </nav>

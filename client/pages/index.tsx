@@ -1,11 +1,10 @@
 import Landing from "../components/Layout/Landing";
-import Navbar from "../components/Layout/Navbar";
+import Layout from "../components/Layout";
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
+    <Layout>
       <Landing />
-    </>
+    </Layout>
   );
 }

@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import Link from "next/link";
 
 interface Props {}
 
@@ -13,12 +14,12 @@ export default function Landing({}: Props): ReactElement {
             other developers
           </p>
           <div className="buttons">
-            <a href="register.html" className="btn btn-primary">
-              Sign Up
-            </a>
-            <a href="login.html" className="btn btn-light">
-              Login
-            </a>
+            <Link href="/register">
+              <a className="btn btn-primary">Sign Up</a>
+            </Link>
+            <Link href="/login">
+              <a className="btn btn-light">Login</a>
+            </Link>
           </div>
         </div>
       </div>
