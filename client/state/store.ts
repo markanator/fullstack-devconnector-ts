@@ -6,9 +6,11 @@ import {
 import Logger from "redux-logger";
 import alertReducer from "./AlertSlice";
 import userReducer from "./UserSlice";
+import authReducer from "./AuthSlice";
 
 const rootReducer = combineReducers({
   alert: alertReducer,
+  auth: authReducer,
   user: userReducer,
 });
 

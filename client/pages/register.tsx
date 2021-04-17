@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setAlert } from "../state/AlertSlice";
+import { RegUserAction } from "../state/AuthSlice";
 import Layout from "../components/Layout";
 import Alert from "../components/Alert";
 
@@ -26,7 +27,6 @@ export default function register({}: Props): ReactElement {
 
   const onSubmit = async (data) => {
     if (data.password !== data.password2) {
-      // console.log("PASSWORDS DO NOT MATCH");
       dispatch(setAlert("Passwords do not match.", "danger"));
     } else {
       const newUser = {
@@ -34,12 +34,7 @@ export default function register({}: Props): ReactElement {
         email: data.email,
         password: data.password,
       };
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URI}/users`,
-        newUser
-      );
-      console.log("RES", res.data);
-      // alert(JSON.stringify(data, null, 4));
+      dispatch(RegUserAction(newUser));
     }
   };
 
