@@ -256,7 +256,7 @@ const FetchGH = async (req: Request, res: Response) => {
 
     const ghRes = await axios.get(GH_URL, {
       headers: {
-        Authorization: `token ${process.env.GH_SECRET}`,
+        Authorization: `token ${process.env.GH_SECRET as string}`,
         "user-agent": "node.js",
       },
     });
