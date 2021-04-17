@@ -12,22 +12,22 @@ export default function index({ children }: Props): ReactElement {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (typeof window !== "undefined") {
-    const token = window.localStorage.getItem("token");
+    if (typeof window !== "undefined") {
+      const token = window.localStorage.getItem("token");
 
-    if (token) {
-      console.log("WINDOW TOKEN", token);
-      setAuthToken(token);
+      if (token) {
+        console.log("WINDOW TOKEN", token);
+        setAuthToken(token);
+      }
+
+      dispatch(LoadUserAction());
+
+      // log user out from all tabs if they log out in one tab
+      window.addEventListener("storage", () => {
+        if (!token) dispatch(LogoutAuthAction());
+      });
     }
-
-    dispatch(LoadUserAction());
-
-    // log user out from all tabs if they log out in one tab
-    window.addEventListener("storage", () => {
-      if (!token) dispatch(LogoutAuthAction());
-    });
-    // }
-  }, [dispatch, LoadUserAction, LogoutAuthAction]);
+  }, []);
 
   return (
     <>
