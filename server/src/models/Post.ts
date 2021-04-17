@@ -16,6 +16,7 @@ interface IPost extends Document {
   user: string;
   text: string;
   name: string;
+  slug?: string;
   avatar?: string;
   likes: ILikes[];
   comments: IComments[];
@@ -35,6 +36,9 @@ const PostSchema = new Schema({
   name: {
     type: String,
     require: true,
+  },
+  slug: {
+    type: String,
   },
   avatar: {
     type: String,
@@ -75,6 +79,6 @@ const PostSchema = new Schema({
   },
 });
 
-const Post: Model<IPost> = model("user", PostSchema);
+const Post: Model<IPost> = model("post", PostSchema);
 
 export default Post;

@@ -8,7 +8,7 @@ import User from "../models/User";
 const router = express.Router();
 
 // @route   GET api/auth
-// @desc    Test route
+// @desc    fetch active user
 // @access  Public
 router.get("/", verifyTokenMw, async (req: any, res: Response) => {
   try {
@@ -20,7 +20,7 @@ router.get("/", verifyTokenMw, async (req: any, res: Response) => {
   }
 });
 
-// @route   GET api/auth
+// @route   GET api/auth.login
 // @desc    Authenticate user
 // @access  Public
 router.post(
@@ -58,7 +58,7 @@ router.post(
         payload,
         process.env.JWT_SECRET as string,
         {
-          expiresIn: 36000,
+          expiresIn: 1000 * 60 * 60 * 24, // one day
         },
         (err, token) => {
           if (err) {

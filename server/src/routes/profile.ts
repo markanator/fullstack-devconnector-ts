@@ -332,7 +332,7 @@ router.delete(
       if (removeIndex < 0)
         return res.status(404).json({ msg: "Nothing found" });
 
-      console.log("REMOVE", removeIndex);
+      // console.log("REMOVE", removeIndex);
 
       profile.education.splice(removeIndex, 1);
 

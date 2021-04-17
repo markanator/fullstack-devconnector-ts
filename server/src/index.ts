@@ -8,7 +8,7 @@ import connectDB from "./config/db";
 import AuthRoutes from "./routes/auth";
 import UserRoutes from "./routes/users";
 import ProfileRoutes from "./routes/profile";
-// import PostsRoutes from "./routes/posts";
+import PostsRoutes from "./routes/posts";
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ app.get("/", (_req, res) => res.send("API RUNNING"));
 app.use("/api/auth", AuthRoutes);
 app.use("/api/users", UserRoutes);
 app.use("/api/profile", ProfileRoutes);
-// app.use("/api/posts", PostsRoutes);
+app.use("/api/posts", PostsRoutes);
 
 app.listen(PORT, () => {
   console.log(`=== SERVER STARTED ON http://localhost:${PORT} ===`);
