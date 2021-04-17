@@ -16,6 +16,7 @@ const initialState: AlertState = {
   alerts: [],
 };
 
+//! Main sauce
 export const alertSlice = createSlice({
   name: "alert",
   initialState,
@@ -28,21 +29,21 @@ export const alertSlice = createSlice({
           alertType,
         },
       }),
-      reducer: (state, action: PayloadAction<Alert>) => {
-        state.alerts.push(action.payload);
+      reducer: (state, { payload }: PayloadAction<Alert>) => {
+        state.alerts.push(payload);
       },
     },
-    removeAlert: (state, { payload }) => {
+    removeAlert: (state, { payload }: PayloadAction<Number>) => {
       state.alerts.filter((alert) => alert.id !== payload);
     },
   },
 });
 
-// export actions for hooks
+//! for user with useDispatch
 export const { setAlert, removeAlert } = alertSlice.actions;
 
-//  * Extract alerts from root state
+//* for use with useSelector
 export const selectAlert = (state: RootState) => state.alert.alerts;
 
-// export reducer for store
+//? export reducer for store
 export default alertSlice.reducer;
