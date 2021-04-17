@@ -5,12 +5,11 @@ import Profile, { IExperience } from "../models/Profile";
 import User from "../models/User";
 import { IProfileFields } from "../types/IProfileFields";
 
-const FetchMe = async (req: Request, res: Response) => {
+const FetchMe = async (req: Partial<Request>, res: Response) => {
   try {
     const profile = await Profile.findOne({
       user: req.user!.id,
     }).populate("user", ["name", "avatar"]);
-
     if (!profile)
       return res.status(400).json({ msg: "There is no profile for this user" });
 
@@ -44,7 +43,10 @@ const RegUpdateUser = async (req: Request, res: Response) => {
 
   // build profile object
 
-  const profileFields: IProfileFields = {};
+  const profileFields: IProfileFields = {
+    skills: [],
+    social: {},
+  };
   profileFields.user = req.user!.id;
   if (company) profileFields.company = company;
   if (website) profileFields.website = website;

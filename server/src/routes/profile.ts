@@ -1,10 +1,7 @@
-import axios from "axios";
-import express, { Request, Response } from "express";
-import { check, validationResult } from "express-validator";
-import verifyTokenMw from "../middlewares/verifyToken";
-import Profile, { IExperience } from "../models/Profile";
-import User from "../models/User";
+import express from "express";
+import { check } from "express-validator";
 import * as profCon from "../controller/profileController";
+import verifyTokenMw from "../middlewares/verifyToken";
 
 const router = express.Router();
 

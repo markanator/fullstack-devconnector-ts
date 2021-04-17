@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 const jwt = require("jsonwebtoken");
 
-export default function verifyTokenMw(
+export default async function verifyTokenMw(
   req: Request,
   res: Response,
   next: NextFunction
@@ -15,7 +15,7 @@ export default function verifyTokenMw(
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded.user;
     return next();

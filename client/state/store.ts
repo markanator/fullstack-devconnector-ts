@@ -5,13 +5,13 @@ import {
 } from "@reduxjs/toolkit";
 import Logger from "redux-logger";
 import alertReducer from "./AlertSlice";
-import userReducer from "./UserSlice";
 import authReducer from "./AuthSlice";
+import profileReducer from "./ProfileSlice";
 
 const rootReducer = combineReducers({
   alert: alertReducer,
   auth: authReducer,
-  user: userReducer,
+  profile: profileReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
