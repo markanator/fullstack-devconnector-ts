@@ -1,52 +1,64 @@
+import argon2 from "argon2";
 import express from "express";
 import { check, validationResult } from "express-validator";
-import verifyTokenMw from "../middlewares/verifyToken";
-import User from "../models/User";
-import argon2 from "argon2";
+import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
+import User from "../models/User";
 
 const router = express.Router();
 
-// @route   GET api/auth
-// @desc    Test route
-// @access  Public
-router.get("/", verifyTokenMw, async (req, res) => {
-  try {
-    const user = await User.findById(req.user!.id).select("-password");
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ msg: "Error occurred." });
-  }
-});
-
-// @route   GET api/auth
-// @desc    Authenticate user
+// @route   POST api/users
+// @desc    register route
 // @access  Public
 router.post(
-  "/login",
+  "/",
   [
-    check("email", "Missing email.").isEmail(),
-    check("password", "Missing password.").exists(),
+    check("name", "Name is required").not().isEmpty(),
+    check("email", "Please include a valid email.").isEmail(),
+    check(
+      "password",
+      "Please enter a valid password longer than 6 characters."
+    ).isLength({ min: 6 }),
   ],
   async (req: any, res: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { email, password } = req.body;
 
+    const { name, email, password } = req.body;
     try {
+      // see if user exists => true? error
       let user = await User.findOne({ email });
-      if (!user) {
-        return res.status(400).json({ msg: "Invalid credentials." });
+      if (user) {
+        console.log(user);
+        return res.status(400).json({
+          errors: [
+            {
+              msg: "User already exists",
+            },
+          ],
+        });
       }
-      // check for password match
-      const isMatch = await argon2.verify(user.password, password);
+      // get users gravatar
+      const avatar = gravatar.url(email, {
+        s: "300",
+        rating: "pg",
+        default: "mm",
+        protocol: "https",
+      });
 
-      if (!isMatch) {
-        return res.status(400).json({ msg: "Invalid credentials." });
-      }
+      user = new User({
+        name,
+        email,
+        avatar,
+        password,
+      });
+      // encrypt password
+      user.password = await argon2.hash(password);
+
+      await user.save();
+
       // return JWT
       const payload = {
         user: {
@@ -62,12 +74,13 @@ router.post(
         },
         (err, token) => {
           if (err) throw err;
-          //! LOGIN all good
+          // all good
           return res.json({ token });
         }
       );
     } catch (error) {
       console.log(error);
+      return res.status(500).send("server error");
     }
   }
 );
