@@ -30,7 +30,7 @@ export default function login({}: Props): ReactElement {
 
   // redirect if authed
   if (isAuthenticated) {
-    router.push("/");
+    router.push("/dashboard");
   }
 
   return (

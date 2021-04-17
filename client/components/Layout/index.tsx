@@ -13,7 +13,7 @@ export default function index({ children }: Props): ReactElement {
 
   useEffect(() => {
     // if (typeof window !== "undefined") {
-    let token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem("token");
 
     if (token) {
       console.log("WINDOW TOKEN", token);
