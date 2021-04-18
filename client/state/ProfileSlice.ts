@@ -84,6 +84,57 @@ export const CreateProfileAction = (
   }
 };
 
+// update Profile
+export const AddExperienceAction = (formData, router: NextRouter) => async (
+  dispatch
+) => {
+  try {
+    const res = await axiosFetch.put("/profile/experience", formData);
+
+    dispatch(setProfile(res.data));
+    dispatch(setAlert("Experience Added!", "success"));
+
+    router.push("/dashboard");
+  } catch (err) {
+    console.log(err.message);
+
+    const errors: { msg: string }[] = err.response.data.errors;
+    errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
+
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const AddEducationAction = (formData, router: NextRouter) => async (
+  dispatch
+) => {
+  try {
+    const res = await axiosFetch.put("/profile/education", formData);
+
+    dispatch(setProfile(res.data));
+    dispatch(setAlert("Education Added!", "success"));
+
+    router.push("/dashboard");
+  } catch (err) {
+    console.log(err.message);
+
+    const errors: { msg: string }[] = err.response.data.errors;
+    errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
+
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
 //! for user with useDispatch
 export const { setProfile, profileError, clearProfile } = ProfileSlice.actions;
 

@@ -21,15 +21,10 @@ function createProfile(): ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
   const [toggleSocials, setToggleSocials] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors },
-  } = useForm<NewProfileFormData>();
+  const { register, handleSubmit } = useForm<NewProfileFormData>();
 
   const onSubmit = (data) => {
     dispatch(CreateProfileAction(data, router));
-    // alert(JSON.stringify(data, null, 4));
   };
 
   return (
