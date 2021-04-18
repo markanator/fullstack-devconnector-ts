@@ -10,6 +10,9 @@ export default function Navbar(): ReactElement {
   const authLinks = (
     <ul>
       <li>
+        <Link href="/profiles">Developers</Link>
+      </li>
+      <li>
         <Link href="/dashboard">
           <a>
             <FaUser />
