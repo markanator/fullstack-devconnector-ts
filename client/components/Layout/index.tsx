@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { LoadUserAction, LogoutAuthAction } from "../../state/AuthSlice";
 import setAuthToken from "../../utils/setAuthToken";
+import Alert from "../Alert";
 import Navbar from "./Navbar";
 
 interface Props {
@@ -32,7 +33,12 @@ export default function index({ children }: Props): ReactElement {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main>
+        <section className="container">
+          <Alert />
+          {children}
+        </section>
+      </main>
     </>
   );
 }

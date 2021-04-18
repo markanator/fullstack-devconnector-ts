@@ -3,12 +3,9 @@ import Link from "next/link";
 import React, { ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import Alert from "../components/Alert";
 import Layout from "../components/Layout";
 import { setAlert } from "../state/AlertSlice";
 import { RegUserAction, selectAuth } from "../state/AuthSlice";
-
-interface Props {}
 
 type FormData = {
   name: string;
@@ -17,7 +14,7 @@ type FormData = {
   password2: string;
 };
 
-export default function register({}: Props): ReactElement {
+export default function register(): ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector(selectAuth);
@@ -48,73 +45,70 @@ export default function register({}: Props): ReactElement {
 
   return (
     <Layout>
-      <section className="container">
-        <Alert />
-        <h1 className="large text-primary">Sign Up</h1>
-        <p className="lead">
-          <i className="fas fa-user"></i> Create Your Account
-        </p>
-        <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="name"
-              required
-              autoComplete="first-name"
-              {...register("name", { required: true, min: 2 })}
-            />
-            <p>{errors.name && "Name is required"}</p>
-          </div>
-          <div className="form-group">
-            <input
-              type="email"
-              placeholder="e-mail"
-              required
-              autoComplete="new-password"
-              {...register("email", { required: true })}
-            />
-            <small className="form-text">
-              {errors.email
-                ? "Email is required"
-                : "This site uses Gravatar so if you want a profile image, use a Gravatar email"}
-            </small>
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="******"
-              minLength={6}
-              required
-              autoComplete="new-password"
-              {...register("password", {
-                required: true,
-                min: 6,
-                minLength: 6,
-              })}
-            />
-            <p>{errors.password && "Password is required."}</p>
-          </div>
-          <div className="form-group">
-            <input
-              type="password"
-              placeholder="******"
-              minLength={6}
-              required
-              autoComplete="new-password"
-              {...register("password2", {
-                required: true,
-                min: 6,
-                minLength: 6,
-              })}
-            />
-            <p>{errors.password2 && "Please confirm password."}</p>
-          </div>
-          <input type="submit" className="btn btn-primary" value="Register" />
-        </form>
-        <p className="my-1">
-          Already have an account? <Link href="/login">Sign In</Link>
-        </p>
-      </section>
+      <h1 className="large text-primary">Sign Up</h1>
+      <p className="lead">
+        <i className="fas fa-user"></i> Create Your Account
+      </p>
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="name"
+            required
+            autoComplete="first-name"
+            {...register("name", { required: true, min: 2 })}
+          />
+          <p>{errors.name && "Name is required"}</p>
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            placeholder="e-mail"
+            required
+            autoComplete="new-password"
+            {...register("email", { required: true })}
+          />
+          <small className="form-text">
+            {errors.email
+              ? "Email is required"
+              : "This site uses Gravatar so if you want a profile image, use a Gravatar email"}
+          </small>
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="******"
+            minLength={6}
+            required
+            autoComplete="new-password"
+            {...register("password", {
+              required: true,
+              min: 6,
+              minLength: 6,
+            })}
+          />
+          <p>{errors.password && "Password is required."}</p>
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            placeholder="******"
+            minLength={6}
+            required
+            autoComplete="new-password"
+            {...register("password2", {
+              required: true,
+              min: 6,
+              minLength: 6,
+            })}
+          />
+          <p>{errors.password2 && "Please confirm password."}</p>
+        </div>
+        <input type="submit" className="btn btn-primary" value="Register" />
+      </form>
+      <p className="my-1">
+        Already have an account? <Link href="/login">Sign In</Link>
+      </p>
     </Layout>
   );
 }
