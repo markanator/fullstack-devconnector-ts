@@ -251,14 +251,14 @@ const DelProfEdu = async (req: any, res: any) => {
 
 const FetchGH = async (req: Request, res: Response) => {
   try {
-    const GH_URL = encodeURI(
-      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
-    );
+    const GH_URL = `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`;
 
     const ghRes = await axios.get(GH_URL, {
       headers: {
-        "user-agent": "node.js",
-        Authorization: `token ${process.env.GH_SECRET}`,
+        // Authorization: `token ${process.env.GH_SECRET}`,
+        // "Content-Type": "application/json",
+        // Accept: "application/vnd.github.mercy-preview+json",
+        // "user-agent": "node.js",
       },
     });
 

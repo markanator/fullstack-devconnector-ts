@@ -23,6 +23,14 @@ export const ProfileSlice = createSlice({
       state.profile = payload;
       state.loading = false;
     },
+    getProfiles: (state, { payload }) => {
+      state.profiles = payload;
+      state.loading = false;
+    },
+    getRepos: (state, { payload }) => {
+      state.repos = payload;
+      state.loading = false;
+    },
     profileError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
@@ -197,8 +205,62 @@ export const DelAccountAction = () => async (dispatch) => {
   }
 };
 
+export const GetAllProfiles = () => async (dispatch) => {
+  try {
+    const res = await axiosFetch.get("/profile");
+
+    dispatch(getProfiles(res.data));
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const GetProfileById = (id: string) => async (dispatch) => {
+  try {
+    const res = await axiosFetch.get(`/profile/user/${id}`);
+
+    dispatch(setProfile(res.data));
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const GetGithubRepos = (username: string) => async (dispatch) => {
+  try {
+    const res = await axiosFetch.get(`/profile/github/${username}`);
+
+    dispatch(getRepos(res.data));
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
 //! for user with useDispatch
-export const { setProfile, profileError, clearProfile } = ProfileSlice.actions;
+export const {
+  setProfile,
+  profileError,
+  clearProfile,
+  getProfiles,
+  getRepos,
+} = ProfileSlice.actions;
 
 //* Other code such as selectors can use the imported `RootState` type
 export const selectProfile = (state: RootState) => state.profile;
