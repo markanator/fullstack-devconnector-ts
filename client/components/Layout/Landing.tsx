@@ -5,7 +5,7 @@ interface Props {}
 
 export default function Landing({}: Props): ReactElement {
   return (
-    <section className="landing">
+    <>
       <div className="dark-overlay">
         <div className="landing-inner">
           <h1 className="x-large">Developer Connector</h1>
@@ -23,6 +23,6 @@ export default function Landing({}: Props): ReactElement {
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 }

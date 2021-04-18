@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { ReactElement, ReactNode, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { LoadUserAction, LogoutAuthAction } from "../../state/AuthSlice";
@@ -11,6 +12,7 @@ interface Props {
 
 export default function index({ children }: Props): ReactElement {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -29,12 +31,13 @@ export default function index({ children }: Props): ReactElement {
       });
     }
   }, []);
+  const isLandingPage = router.pathname === "/";
 
   return (
     <>
       <Navbar />
       <main>
-        <section className="container">
+        <section className={isLandingPage ? "landing" : "container"}>
           <Alert />
           {children}
         </section>
