@@ -1,18 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import axiosFetch from "../utils/axiosFetch";
+import { TProfileState } from "../types/profileTypes";
 import { setAlert } from "./AlertSlice";
-
-type TProfileState = {
-  profile: null;
-  profiles: string[];
-  repos: string[];
-  loading: boolean;
-  error: {
-    msg?: string;
-    status?: string;
-  };
-};
+import { NextRouter } from "next/router";
 
 const initialState: TProfileState = {
   profile: null,
@@ -53,7 +44,37 @@ export const GetCurrentProfileAction = () => async (dispatch) => {
 
     dispatch(setProfile(res.data));
   } catch (err) {
-    console.error(err);
+    console.error(err.message);
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const CreateProfileAction = (
+  formData,
+  router: NextRouter,
+  edit = false
+) => async (dispatch) => {
+  try {
+    const res = await axiosFetch.post("/profile", formData);
+
+    dispatch(setProfile(res.data));
+    dispatch(
+      setAlert(edit ? "Profile updated!" : "Profile Created!", "success")
+    );
+    if (!edit) {
+      router.push("/dashboard");
+    }
+  } catch (err) {
+    console.log(err.message);
+
+    const errors: { msg: string }[] = err.response.data.errors;
+    errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
+
     dispatch(
       profileError({
         msg: err.response.statusText,

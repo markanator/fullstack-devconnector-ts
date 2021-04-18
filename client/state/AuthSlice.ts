@@ -77,9 +77,7 @@ export const RegUserAction = (user: TRegUser) => async (dispatch) => {
     // console.log("FAIL REG ASYNC RES:", { ...err.response.data });
     const errors: { msg: string }[] = err.response.data.errors;
     errors.forEach((item) => dispatch(setAlert(item.msg, "danger")));
-    // if (isClientSide) {
-    //   window.localStorage.removeItem("token");
-    // }
+
     return dispatch(authFail());
   }
 };

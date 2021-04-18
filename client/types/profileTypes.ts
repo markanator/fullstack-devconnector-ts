@@ -1,3 +1,14 @@
+export type TProfileState = {
+  profile: null;
+  profiles: string[];
+  repos: string[];
+  loading: boolean;
+  error: {
+    msg?: string;
+    status?: string;
+  };
+};
+
 export type IExperience = {
   title: string;
   company: string;
@@ -30,12 +41,28 @@ export type IProfile = {
   experience: IExperience[];
   education: IEducation[];
   social: {
-    youtube?: String;
-    twitter?: String;
-    facebook?: String;
-    linkedin?: String;
-    instagram?: String;
-    twitch?: String;
+    youtube?: string;
+    twitter?: string;
+    facebook?: string;
+    linkedin?: string;
+    instagram?: string;
+    twitch?: string;
   };
   date: Date;
+};
+
+export type NewProfileFormData = {
+  company: string;
+  website: string;
+  location: string;
+  status: string;
+  skills: string;
+  githubUsername: string;
+  bio: string;
+  youtube: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  instagram: string;
+  twitch: string;
 };

@@ -16,6 +16,7 @@ import {
 } from "../../state/ProfileSlice";
 import withAuth from "../../utils/withAuth";
 import Link from "next/link";
+import Alert from "../../components/Alert";
 
 function dashboard(): ReactElement {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function dashboard(): ReactElement {
   ) : (
     <Layout>
       <section className="container">
+        <Alert />
         <h1 className="large text-primary">Dashboard</h1>
         <p className="lead">
           <FaUser /> Welcome {user && user.name}
