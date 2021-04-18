@@ -32,7 +32,7 @@ function editProfile(): ReactElement {
   }, [loading]);
 
   const { register, handleSubmit } = useForm<NewProfileFormData>({
-    defaultValues: !loading && profile,
+    defaultValues: !loading && ({ ...profile, ...profile.social } as any),
   });
 
   const onSubmit = (data) => {

@@ -1,5 +1,5 @@
 export type TProfileState = {
-  profile: null;
+  profile: IProfile | null;
   profiles: string[];
   repos: string[];
   loading: boolean;
