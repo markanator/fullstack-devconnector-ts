@@ -27,7 +27,7 @@ export default function IndividualProfile({ data }: Props): ReactElement {
           {data.status} {data.company && <span> at {data.company} </span>}
         </p>
         <p>{data.location && data.location}</p>
-        <Link href={`/profile/${data._id}`}>
+        <Link href={`/profiles/${data.user._id}`}>
           <a className="btn btn-primary">View Profile</a>
         </Link>
       </div>

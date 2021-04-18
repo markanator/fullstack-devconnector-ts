@@ -1,7 +1,7 @@
 export type TProfileState = {
   profile: IProfile | null;
   profiles: any[];
-  repos: string[];
+  repos: any[];
   loading: boolean;
   error: {
     msg?: string;
@@ -33,7 +33,11 @@ export type IEducation = {
 
 export type IProfile = {
   _id?: string;
-  user: string;
+  user: {
+    _id?: string;
+    name?: string;
+    avatar?: string;
+  };
   company?: string;
   website?: string;
   location?: string;

@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from "react";
 import { FaConnectdevelop } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/Layout";
-import IndividualProfile from "../../components/profiles/IndividualProfile";
+import IndividualProfile from "../../components/profiles/ProfileListItem";
 import Spinner from "../../components/Spinner";
 import { GetAllProfiles, selectProfile } from "../../state/ProfileSlice";
 
