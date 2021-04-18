@@ -7,8 +7,9 @@ import { useDispatch } from "react-redux";
 import Layout from "../../components/Layout";
 import { AddExperienceAction } from "../../state/ProfileSlice";
 import { IExperience } from "../../types/profileTypes";
+import withAuth from "../../utils/withAuth";
 
-export default function addExperience(): ReactElement {
+function addExperience(): ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -83,3 +84,5 @@ export default function addExperience(): ReactElement {
     </Layout>
   );
 }
+
+export default withAuth(addExperience);

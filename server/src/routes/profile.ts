@@ -36,7 +36,7 @@ router.get("/user/:userId", profCon.ProfById);
 //? @route   GET api/profile
 //? @desc    get profile by userid
 //? @access  Public
-router.delete("/user/:userid", verifyTokenMw, profCon.DeleteProf);
+router.delete("/", verifyTokenMw, profCon.DeleteProf);
 
 // ************************************
 // *            EXPERIENCE

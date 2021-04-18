@@ -4,6 +4,7 @@ import axiosFetch from "../utils/axiosFetch";
 import { TProfileState } from "../types/profileTypes";
 import { setAlert } from "./AlertSlice";
 import { NextRouter } from "next/router";
+import { authFail } from "./AuthSlice";
 
 const initialState: TProfileState = {
   profile: null,
@@ -28,8 +29,9 @@ export const ProfileSlice = createSlice({
     },
     clearProfile: (state) => {
       state.profile = null;
-      state.loading = false;
+      state.profiles = [];
       state.repos = [];
+      state.loading = false;
     },
   },
 });
@@ -132,6 +134,66 @@ export const AddEducationAction = (formData, router: NextRouter) => async (
         status: err.response.status,
       })
     );
+  }
+};
+
+export const DelExpAction = (id: string) => async (dispatch) => {
+  try {
+    const res = await axiosFetch.delete(`/profile/experience/${id}`);
+
+    dispatch(setProfile(res.data));
+    dispatch(setAlert("Experience removed!", "success"));
+  } catch (err) {
+    console.log(err.message);
+
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const DelEduAction = (id: string) => async (dispatch) => {
+  try {
+    const res = await axiosFetch.delete(`/profile/education/${id}`);
+
+    dispatch(setProfile(res.data));
+    dispatch(setAlert("Experience removed!", "success"));
+  } catch (err) {
+    console.log(err.message);
+
+    dispatch(
+      profileError({
+        msg: err.response.statusText,
+        status: err.response.status,
+      })
+    );
+  }
+};
+
+export const DelAccountAction = () => async (dispatch) => {
+  if (
+    window.confirm(
+      "Are you sure you want to delete your profile? This cannot be UNDONE."
+    )
+  ) {
+    try {
+      const res = await axiosFetch.delete("/profile");
+
+      dispatch(clearProfile());
+      dispatch(authFail());
+      dispatch(setAlert("Your account has been permanently removed"));
+    } catch (err) {
+      console.log(err.message);
+      dispatch(
+        profileError({
+          msg: err.response.statusText,
+          status: err.response.status,
+        })
+      );
+    }
   }
 };
 

@@ -10,6 +10,7 @@ export type TProfileState = {
 };
 
 export type IExperience = {
+  _id?: string;
   title: string;
   company: string;
   location?: string;
@@ -20,6 +21,7 @@ export type IExperience = {
 };
 
 export type IEducation = {
+  _id?: string;
   school: string;
   degree: string;
   fieldOfStudy: string;
@@ -30,6 +32,7 @@ export type IEducation = {
 };
 
 export type IProfile = {
+  _id?: string;
   user: string;
   company?: string;
   website?: string;

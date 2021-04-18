@@ -1,12 +1,33 @@
 import dayjs from "dayjs";
 import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
-import { selectProfile } from "../../state/ProfileSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { DelEduAction, selectProfile } from "../../state/ProfileSlice";
 import { IEducation } from "../../types/profileTypes";
 
 export default function ListEdu(): ReactElement {
+  const dispatch = useDispatch();
   const { profile } = useSelector(selectProfile);
   const { education } = profile;
+
+  const SingleEdu = ({ data }: { data: IEducation }) => (
+    <tr>
+      <td>{data.school}</td>
+      <td className="hide-sm">{data.degree}</td>
+      <td className="hide-sm">
+        {dayjs(data.from).format("MM/DD/YYYY")} -{" "}
+        {data.to === null ? "Present" : dayjs(data.to).format("MM/DD/YYYY")}
+      </td>
+      <td>
+        <button
+          className="btn btn-danger"
+          onClick={() => dispatch(DelEduAction(data._id))}
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+
   return (
     <>
       <h2 className="my-2">Education Credentials</h2>
@@ -27,17 +48,3 @@ export default function ListEdu(): ReactElement {
     </>
   );
 }
-
-const SingleEdu = ({ data }: { data: IEducation }) => (
-  <tr>
-    <td>{data.school}</td>
-    <td className="hide-sm">{data.degree}</td>
-    <td className="hide-sm">
-      {dayjs(data.from).format("MM/DD/YYYY")} -{" "}
-      {data.to === null ? "Present" : dayjs(data.to).format("MM/DD/YYYY")}
-    </td>
-    <td>
-      <button className="btn btn-danger">Delete</button>
-    </td>
-  </tr>
-);

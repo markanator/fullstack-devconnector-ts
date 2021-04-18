@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
+import Post from "../models/Post";
 import Profile, { IExperience } from "../models/Profile";
 import User from "../models/User";
 import { IProfileFields } from "../types/IProfileFields";
@@ -121,6 +122,8 @@ const ProfById = async (req: Request, res: Response) => {
 
 const DeleteProf = async (req: Request, res: Response) => {
   try {
+    // del posts
+    await Post.deleteMany({ user: req.user!.id });
     // remove profile
     await Profile.findOneAndRemove({ user: req.user!.id });
     //remove user
@@ -175,17 +178,13 @@ const DeleteProfExp = async (req: any, res: any) => {
     const profile = await Profile.findOne({ user: req.user.id });
     if (!profile) return res.status(404).json({ msg: "Nothing found" });
 
-    const removeIndex = profile.experience
-      .map((item: any) => item.id)
-      .indexOf(req.params.expId);
-
-    if (removeIndex < 0) return res.status(404).json({ msg: "Nothing found" });
-
-    profile.experience.splice(removeIndex, 1);
+    profile.experience = profile.experience.filter(
+      (exp: any) => exp._id.toString() !== req.params.expId
+    );
 
     await profile.save();
 
-    return res.status(200).json({ msg: "Experience deleted" });
+    return res.status(200).json(profile);
   } catch (error) {
     console.log(error.message);
 
@@ -232,23 +231,23 @@ const DelProfEdu = async (req: any, res: any) => {
     const profile = await Profile.findOne({ user: req.user.id });
     if (!profile) return res.status(404).json({ msg: "Nothing found" });
 
-    const removeIndex = profile.education
-      .map((item: any) => item.id)
-      .indexOf(req.params.eduId);
-
-    if (removeIndex < 0) return res.status(404).json({ msg: "Nothing found" });
-
-    profile.education.splice(removeIndex, 1);
+    profile.education = profile.education.filter(
+      (edu: any) => edu._id.toString() !== req.params.eduId
+    );
 
     await profile.save();
 
-    return res.status(200).json({ msg: "Education deleted" });
+    return res.status(200).json(profile);
   } catch (error) {
     console.log(error.message);
 
     return res.status(500).json({ msg: "Server error." });
   }
 };
+
+// ?***********************************
+// ?            GitHub
+// ?***********************************
 
 const FetchGH = async (req: Request, res: Response) => {
   try {
@@ -258,8 +257,8 @@ const FetchGH = async (req: Request, res: Response) => {
 
     const ghRes = await axios.get(GH_URL, {
       headers: {
-        Authorization: `token ${process.env.GH_SECRET as string}`,
         "user-agent": "node.js",
+        Authorization: `token ${process.env.GH_SECRET}`,
       },
     });
 

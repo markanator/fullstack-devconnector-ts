@@ -16,7 +16,7 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     setAlert: {
-      prepare: (msg: string, alertType: string) => ({
+      prepare: (msg: string, alertType?: string) => ({
         payload: {
           id: uuid(),
           msg,

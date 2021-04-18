@@ -7,8 +7,9 @@ import { useDispatch } from "react-redux";
 import Layout from "../../components/Layout";
 import { AddEducationAction } from "../../state/ProfileSlice";
 import { IEducation } from "../../types/profileTypes";
+import withAuth from "../../utils/withAuth";
 
-export default function addEducation(): ReactElement {
+function addEducation(): ReactElement {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -87,3 +88,5 @@ export default function addEducation(): ReactElement {
     </Layout>
   );
 }
+
+export default withAuth(addEducation);

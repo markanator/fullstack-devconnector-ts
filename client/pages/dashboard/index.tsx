@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { ReactElement, useEffect } from "react";
 import { FaUser, FaUserMinus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import Alert from "../../components/Alert";
 import DashButtons from "../../components/dashboard/DashButtons";
 import ListEdu from "../../components/dashboard/ListEdu";
 import ListExp from "../../components/dashboard/ListExp";
@@ -10,6 +9,7 @@ import Layout from "../../components/Layout";
 import Spinner from "../../components/Spinner";
 import { selectAuth } from "../../state/AuthSlice";
 import {
+  DelAccountAction,
   GetCurrentProfileAction,
   selectProfile,
 } from "../../state/ProfileSlice";
@@ -39,7 +39,10 @@ function dashboard(): ReactElement {
           <ListEdu />
 
           <div className="my-2">
-            <button className="btn btn-danger">
+            <button
+              className="btn btn-danger"
+              onClick={() => dispatch(DelAccountAction())}
+            >
               <FaUserMinus />
               Delete My Account
             </button>
