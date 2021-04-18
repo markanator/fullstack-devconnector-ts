@@ -22,16 +22,23 @@ const initialState: TProfileState = {
   error: {},
 };
 
+//! MAIN
 export const ProfileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
     setProfile: (state, { payload }) => {
-      (state.profile = payload), (state.loading = false);
+      state.profile = payload;
+      state.loading = false;
     },
     profileError: (state, { payload }) => {
       state.error = payload;
       state.loading = false;
+    },
+    clearProfile: (state) => {
+      state.profile = null;
+      state.loading = false;
+      state.repos = [];
     },
   },
 });
@@ -39,10 +46,10 @@ export const ProfileSlice = createSlice({
 // reducer: get_profile
 // reducer: profile_error
 
-// custom THUNK actions :: easier than toolkit
-export const getCurrentProfile = () => async (dispatch) => {
+//* custom THUNK actions :: easier than toolkit
+export const GetCurrentProfileAction = () => async (dispatch) => {
   try {
-    const res = await axiosFetch.get("/profiles/me");
+    const res = await axiosFetch.get("/profile/me");
 
     dispatch(setProfile(res.data));
   } catch (err) {
@@ -57,10 +64,10 @@ export const getCurrentProfile = () => async (dispatch) => {
 };
 
 //! for user with useDispatch
-export const { setProfile, profileError } = ProfileSlice.actions;
+export const { setProfile, profileError, clearProfile } = ProfileSlice.actions;
 
 //* Other code such as selectors can use the imported `RootState` type
-export const selectProfile = (state: RootState) => state.auth;
+export const selectProfile = (state: RootState) => state.profile;
 
 //? export reducer for store
 export default ProfileSlice.reducer;

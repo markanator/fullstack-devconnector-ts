@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { ReactElement } from "react";
-import { FaCode, FaSignOutAlt } from "react-icons/fa";
+import { FaCode, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutAuthAction, selectAuth } from "../../state/AuthSlice";
 
@@ -10,7 +10,15 @@ export default function Navbar(): ReactElement {
   const authLinks = (
     <ul>
       <li>
-        <a href="#!" onClick={() => dispatch(LogoutAuthAction())}>
+        <Link href="/dashboard">
+          <a>
+            <FaUser />
+            <span className="hide-sm">Dashboard</span>
+          </a>
+        </Link>
+      </li>
+      <li>
+        <a href="/#" onClick={() => dispatch(LogoutAuthAction())}>
           <FaSignOutAlt />
           <span className="hide-sm">Logout</span>
         </a>

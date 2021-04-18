@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TLoginInfo, TRegUser, TUser } from "../types/user";
 import axiosFetch from "../utils/axiosFetch";
 import { setAlert } from "./AlertSlice";
+import { clearProfile } from "./ProfileSlice";
 import { RootState } from "./store";
 
 export const isClientSide = typeof window !== "undefined";
@@ -47,7 +48,7 @@ export const authSlice = createSlice({
   },
 });
 
-// custom THUNK actions :: easier than toolkit
+//* custom THUNK actions :: easier than toolkit
 export const LoadUserAction = () => async (dispatch) => {
   try {
     const res = await axiosFetch.get("/auth");
@@ -104,6 +105,8 @@ export const LoginUserAction = (loginInfo: TLoginInfo) => async (dispatch) => {
 export const LogoutAuthAction = () => async (dispatch) => {
   window.localStorage.removeItem("token");
   dispatch(authFail());
+  dispatch(clearProfile);
+  window.location.href = "/";
 };
 
 //! for user with useDispatch
